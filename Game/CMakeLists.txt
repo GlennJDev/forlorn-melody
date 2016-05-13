@@ -5,6 +5,20 @@ if(MSVC)
     message(STATUS "Added parallel build arguments to CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
 endif()
 
+if (WIN32)
+    message(STATUS "Using Windows config for ForlornMelodyGame")
+    set(GLEW_LIBRARY "glew32")
+    set(GLFW_LIBRARY "glfw3")
+    set(GLEW_INCLUDE_DIR "C:\\Program Files (x86)\\glew\\include")
+    set(GLFW_INCLUDE_DIR "C:\\Program Files (x86)\\glfw\\include")
+    set(GLM_INCLUDE_DIR "C:\\Program Files (x86)\\glm\\include")
+elseif (APPLE)
+    message(STATUS "Using Apple config for ForlornMelodyGame")
+    find_package(GLEW REQUIRED)
+    find_package(GLFW REQUIRED)
+    set(GLM_INCLUDE_DIR "/usr/local/include")
+endif(WIN32)
+
 include_directories(./
         ../
         ${GLM_INCLUDE_DIR}

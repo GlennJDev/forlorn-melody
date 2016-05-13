@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <set>
+#include <algorithm>
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GameEngineBase/Node.h>
