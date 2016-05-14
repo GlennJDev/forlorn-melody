@@ -112,8 +112,17 @@ void MainGame::initSystem()
 void MainGame::gameLoop()
 {
     const string METHOD = "MainGame::gameLoop";
+    auto cloudsTexture = pResourceCache->loadTexture("Resources/Textures/Clouds_BG_Tileable.png");
+    auto pClouds = make_shared<ImageNode>("backgroundCloud1", "backgroundClouds", cloudsTexture);
+    pClouds->setPosition({0.0f,.5f,-50.f});
+    float xScale = glm::tan(glm::radians(70.f)) * -pClouds->getZ()/2;
+    float yScale = xScale * cloudsTexture.height / cloudsTexture.width;
+    pClouds->setXScale(xScale);
+    pClouds->setYScale(yScale);
+
     auto pScene = this->pMasterRenderer->getScene();
 
+    srand(time(0));
     auto sceneryTexture = pResourceCache->loadTexture("Resources/Textures/layer-1.png");
     auto pScenery = make_shared<ImageNode>("backgroundCloud1", "backgroundClouds", sceneryTexture);
     pScenery->setZOrder(0);
@@ -142,11 +151,13 @@ void MainGame::gameLoop()
         oss << "tree" << i;
         string treeName = oss.str();
         auto pTree = make_shared<Node>(treeName, "trees", pTreeModel, treeTexture);
-        pTree->setX((rand() % 20) - 10);
-        pTree->setZ( -5.1f );
+        pTree->setX((rand() % 100) - 50);
+        pTree->setZ( -( (rand() % 40) + 2 ) );
+        pTree->setY(-1);
+        pTree->setScale({0.2f,0.2f,0.2f});
+		pTree->setReflectivity(0.0001f);
+		pTree->setShineDamper(0.001f);
 
-        pTree->setY(-1.90f);
-        pTree->setScale({0.07f,0.07f,0.07f});
         pScene->addChildNode(pTree);
     }
 
@@ -199,7 +210,7 @@ void MainGame::gameLoop()
 //
 //        auto rotation = pTree->getRotation();
 //        pTree->setRotation({rotation.x /*+ 0.01f*/, rotation.y /*+ 0.01f*/, rotation.z + 0.01f});
-        
+
         moveChrono.start();
 
         this->drawGame();

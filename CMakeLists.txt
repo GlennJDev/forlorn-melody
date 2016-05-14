@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.3)
 project(ForlornMelody)
 
+# Belangrijk voor Visual Studio!
+# In de properties van het ForlornMelody project bij Configuration Properties/Debugging de setting Working Directory moet op $(SolutionDir)$(Configuration)\ staan
+# Dit kan spijtig genoeg niet via cmake geconfigureerd worden tenzij en een user.vcproj file genereerd
+
 # Specify the list of directories to search for cmake modules.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
