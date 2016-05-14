@@ -22,9 +22,17 @@ namespace ForlornMelody {
 namespace GameEngine {
 namespace Base {
 
+unordered_map<string, unsigned int> ObjectModelLoader::vertexCompositionIndices;
+
+void ObjectModelLoader::init()
+{
+    vertexCompositionIndices.clear();
+}
 
 shared_ptr<ObjectModel> ObjectModelLoader::loadObjModel(const string &filePath)
 {
+    init();
+
     shared_ptr<ObjectModel> pModel = std::make_shared<ObjectModel>();
 
     try {
@@ -64,7 +72,7 @@ shared_ptr<ObjectModel> ObjectModelLoader::loadObjModel(const string &filePath)
                     if (vertex.z > maxZ)
                         maxZ = vertex.z;
                 } else if (pieces[0] == "vt") {
-                    // blend heeft (u,v) = (0,0) in de linker onderhoek ipv linker bovenhoek
+                    // blender en 3DS Max hebben (u,v) = (0,0) in de linker onderhoek ipv linker bovenhoek
                     vec2 textureCoord {atof(pieces[1].c_str()), 1.0f - atof(pieces[2].c_str())};
                     pModel->getTextureCoords().push_back(textureCoord);
                 } else if (pieces[0] == "vn") {
@@ -107,17 +115,23 @@ void ObjectModelLoader::processVertices(shared_ptr<ObjectModel> pModel,
                                         const vector<string>& pieces)
 {
     for (int i = 1; i < pieces.size(); i++) {
-        auto indicesStr = pieces[i];
-        vector<string> indices;
-        indices.reserve(3);
-        Utils::String::split(indicesStr, '/', indices);
+        auto& indicesStr = pieces[i];
+        if (vertexCompositionIndices.count(indicesStr) == 0) {
+            vector<string> indices;
+            indices.reserve(3);
+            Utils::String::split(indicesStr, '/', indices);
 
-        int vi = atoi(indices[0].c_str()) -1; // vertex index
-        int ti = atoi(indices[1].c_str()) -1; // texture coordinates index
-        int ni = atoi(indices[2].c_str()) -1; // normal index
-        pModel->addDrawingIndices({vi, ti, ni});
+            int vi = atoi(indices[0].c_str()) -1; // vertex index
+            int ti = atoi(indices[1].c_str()) -1; // texture coordinates index
+            int ni = atoi(indices[2].c_str()) -1; // normal index
+            pModel->addVertexComposition({vi, ti, ni});
+            vertexCompositionIndices[indicesStr] = (unsigned int)pModel->getVertexCompositions().size()-1;
+        }
+
+        pModel->addDrawingOrderIndex(vertexCompositionIndices[indicesStr]);
     }
 }
+
 
 } // Base
 } // GameEngine

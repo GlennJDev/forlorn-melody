@@ -41,6 +41,10 @@ struct Vertex
     vec2 uv;
     vec3 normal;
 
+    Vertex() {}
+    Vertex(const vec3& pos, const Color& color, const vec2& uv, const vec3& normal)
+        : position(pos), color(color), uv(uv), normal(normal) {}
+
     void setPosition(float x, float y, float z)
     {
         this->position = vec3(x, y, z);

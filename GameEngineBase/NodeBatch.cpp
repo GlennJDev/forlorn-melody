@@ -160,7 +160,7 @@ void NodeBatch::render()
             auto positioningPoint = vec4(boundingCube.midX(), bottomY, boundingCube.midZ(), 1);
             positioningPoint = undoTranslateToCenter * rotX * rotY * rotZ * translateToCenter * positioningPoint;
 
-            // Translatie naar het middelpunt op de bodem
+            // Translatie naar het middelpunt op de bodem om alles op dezelfde manier te kunnen positioneren
             auto translateToPositioningPoint = glm::translate(identity, -vec3(positioningPoint.x, positioningPoint.y, positioningPoint.z));
             auto undoTranslateToPositioningPoint = glm::inverse(translateToPositioningPoint);
             auto translation = glm::translate(identity, nodePosition);

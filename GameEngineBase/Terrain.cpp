@@ -35,7 +35,7 @@ void Terrain::generateTerrain()
     auto& vertices = this->pObjectModel->getVertices();
     auto& normals = this->pObjectModel->getNormals();
     auto& textureCoords = this->pObjectModel->getTextureCoords();
-    auto& drawingOrder = this->pObjectModel->getDrawingOrder();
+    auto& drawingOrder = this->pObjectModel->getVertexCompositions();
     vertices.resize((unsigned long)count);
     normals.resize((unsigned long)count);
     textureCoords.resize((unsigned long)count);

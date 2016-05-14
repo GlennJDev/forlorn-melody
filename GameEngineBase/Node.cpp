@@ -289,43 +289,34 @@ const map<string, NodePtr> &Node::getChildNodes() const
 const vector<Vertex>& Node::getVertexData()
 {
     if (this->vertexData.size() == 0 && this->pObjectModel != nullptr) {
-        auto verticesCount = this->pObjectModel->getVertices().size();
-        this->vertexData.resize(verticesCount);
-        int i=0;
-        unordered_set<int> verticesAdded;
-        verticesAdded.reserve(verticesCount);
-        auto& drawingOrder = this->pObjectModel->getDrawingOrder();
-        while (i<drawingOrder.size() && verticesAdded.size() < verticesCount) {
-            auto& indices = drawingOrder[i];
-            int vi = indices[0];
-            if (verticesAdded.count(vi) == 0) {
-                auto& vertex = this->pObjectModel->getVertices()[vi];
-                auto& textureCoords = this->pObjectModel->getTextureCoords()[indices[1]];
-                auto& normal = this->pObjectModel->getNormals()[indices[2]];
+        auto& vertexCompositions = this->pObjectModel->getVertexCompositions();
+        auto verticesCount = vertexCompositions.size();
+        vertexData.reserve(verticesCount);
+        
+        for (auto&& vertexComposition : vertexCompositions) {
+            auto& vertex = pObjectModel->getVertices()[vertexComposition[0]];
+            auto& textureCoords = pObjectModel->getTextureCoords()[vertexComposition[1]];
+            auto& normal = pObjectModel->getNormals()[vertexComposition[2]];
 
-                Vertex v {vertex, this->color, textureCoords, normal};
-                this->vertexData[vi] = v;
-            }
-            i++;
+            vertexData.emplace_back(vertex, this->color, textureCoords, normal);
         }
     }
 
-    return this->vertexData;
+    return vertexData;
 }
 
 const vector<unsigned int>& Node::getVerticesDrawingOrder()
 {
-    if (this->pObjectModel != nullptr) {
-        auto& drawingOrder = this->pObjectModel->getDrawingOrder();
-        if (this->vertexDrawingOrder.size() == 0) {
-            this->vertexDrawingOrder.reserve(pObjectModel->getDrawingOrder().size());
-            for (size_t i = 0; i < drawingOrder.size(); i++) {
-                vertexDrawingOrder.emplace_back(drawingOrder[i][0]);
-            }
+    if (this->pObjectModel != nullptr && this->vertexDrawingOrder.size() == 0) {
+        auto& drawingOrder = pObjectModel->getDrawingOrder();
+        vertexDrawingOrder.reserve(drawingOrder.size());
+
+        for (auto&& vertexIndex : drawingOrder) {
+            vertexDrawingOrder.emplace_back(vertexIndex);
         }
     }
 
-    return this->vertexDrawingOrder;
+    return vertexDrawingOrder;
 }
 
 void Node::renderNodes(IRenderBatch& nodeBatch)
@@ -337,7 +328,7 @@ void Node::renderNodes(IRenderBatch& nodeBatch)
 size_t Node::verticesCount() const
 {
     if (this->pObjectModel != nullptr) {
-        return pObjectModel->getVertices().size();
+        return pObjectModel->getVertexCompositions().size();
     }
     return 0;
 }

@@ -116,7 +116,7 @@ void BackgroundRenderBatch::sortNodes()
 {
     std::stable_sort(this->nodes.begin(), this->nodes.end(), [](Node* pNode1, Node* pNode2) {
         return (pNode1->getZOrder() == pNode2->getZOrder() && pNode1->getTexture().id < pNode2->getTexture().id) ||
-            pNode1->getZOrder() > pNode2->getZOrder();
+            pNode1->getZOrder() < pNode2->getZOrder();
     });
 }
 

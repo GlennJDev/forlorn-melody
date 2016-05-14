@@ -2,6 +2,7 @@
 // Created by Glenn Jacob on 23/04/16.
 //
 
+#include <unistd.h>
 #include <sstream>
 #include <glm/glm.hpp>
 #include <GameEngineBase/Window.h>
@@ -70,7 +71,8 @@ void MainGame::initSystem()
     this->pResourceCache = make_shared<ResourceCache>();
 
     this->pCamera = make_shared<Camera>();
-    this->pCamera->setZ(0.1);
+    this->pCamera->setZ(0.1f);
+    this->pCamera->setY(0.5f);
     this->pLight = make_shared<Light>(vec3(0, 500, 500), vec3(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f));
 
     auto pScene = make_shared<Scene>("firstScene");
@@ -101,7 +103,7 @@ void MainGame::initSystem()
     auto personTexture = this->pResourceCache->loadTexture("./Resources/Textures/playerTexture.png");
     auto objModel = this->pResourceCache->loadModel("Resources/Models/person.obj");
     this->pPlayer = make_shared<Player>("player1", "players", objModel, personTexture);
-    pPlayer->setPosition({0.f, -1.0, -2.0f});
+    pPlayer->setPosition({0.f, -1.90, -5.0f});
     pPlayer->setScale({0.08f,0.08f,0.08f});
 
     pScene->addChildNode(pPlayer);
@@ -109,68 +111,81 @@ void MainGame::initSystem()
 
 void MainGame::gameLoop()
 {
-    auto cloudsTexture = pResourceCache->loadTexture("Resources/Textures/Clouds_BG_Tileable.png");
-    auto pClouds = make_shared<ImageNode>("backgroundCloud1", "backgroundClouds", cloudsTexture);
-    pClouds->setPosition({0.0f,.5f,-50.f});
-    float xScale = glm::tan(glm::radians(70.f)) * -pClouds->getZ()/2;
-    float yScale = xScale * cloudsTexture.height / cloudsTexture.width;
-    pClouds->setXScale(xScale);
-    pClouds->setYScale(yScale);
-
-    auto grassTexture = this->pResourceCache->loadTexture("./Resources/Textures/grass.png");
-    auto pTerrain = make_shared<Terrain>("t1", "terrain", 0, -1, grassTexture);
-    pTerrain->setY(-1.0f);
-    auto pTerrain2 = make_shared<Terrain>("t2", "terrain", -1, -1, grassTexture);
-    pTerrain2->setY(-1.0f);
-    auto pTerrain3 = make_shared<Terrain>("t3", "terrain", 0, 0, grassTexture);
-    pTerrain3->setY(-1.0f);
-    auto pTerrain4 = make_shared<Terrain>("t4", "terrain", -1, 0, grassTexture);
-    pTerrain4->setY(-1.0f);
-
+    const string METHOD = "MainGame::gameLoop";
     auto pScene = this->pMasterRenderer->getScene();
-    pScene->addChildNode(pTerrain);
-    pScene->addChildNode(pTerrain2);
-    pScene->addChildNode(pTerrain3);
-    pScene->addChildNode(pTerrain4);
 
-//    srand(time(0));
+    auto sceneryTexture = pResourceCache->loadTexture("Resources/Textures/layer-1.png");
+    auto pScenery = make_shared<ImageNode>("backgroundCloud1", "backgroundClouds", sceneryTexture);
+    pScenery->setZOrder(0);
+    pScenery->setPosition({0.0f,.5f,-20.f});
+    float yScale = glm::tan(glm::radians(70.f/2.0f)) * -pScenery->getZ() + 0.1f;
+    float xScale = yScale * sceneryTexture.width / sceneryTexture.height;
+    pScenery->setXScale(xScale);
+    pScenery->setYScale(yScale);
+    pScene->addChildNode(pScenery);
+
+    auto groundTexture = pResourceCache->loadTexture("Resources/Textures/layer-2.png");
+    auto pGround = make_shared<ImageNode>("ground", "ground1", groundTexture);
+    pGround->setZOrder(1);
+    pGround->setPosition({0.0f, -2.75f, -5.0f});
+    xScale = glm::tan(glm::radians(70.f)) * -pGround->getZ();
+    yScale = xScale * groundTexture.height / groundTexture.width;
+    pGround->setScale({xScale, yScale, 1.0f});
+    pScene->addChildNode(pGround);
+
+
+    srand(time(0));
     auto pTreeModel = pResourceCache->loadModel("Resources/Models/lowPolyTree.obj");
     auto treeTexture = pResourceCache->loadTexture("Resources/Textures/lowPolyTree.png");
     ostringstream oss;
-    for (int i=0 ; i<100 ; i++) {
+    for (int i=0 ; i<10 ; i++) {
         oss << "tree" << i;
         string treeName = oss.str();
         auto pTree = make_shared<Node>(treeName, "trees", pTreeModel, treeTexture);
-        pTree->setX((rand() % 100) - 50);
-        pTree->setZ( -( (rand() % 40) + 2 ) );
-        pTree->setY(-1);
-        pTree->setScale({0.2f,0.2f,0.2f});
+        pTree->setX((rand() % 20) - 10);
+        pTree->setZ( -5.1f );
+
+        pTree->setY(-1.90f);
+        pTree->setScale({0.07f,0.07f,0.07f});
         pScene->addChildNode(pTree);
     }
 
-//    auto pCrateModel = pResourceCache->loadModel("Resources/Models/Crate1.obj");
-//    auto crateTexture = pResourceCache->loadTexture("Resources/Textures/crate_1.png", false);
-//    auto pCrate = make_shared<Node>("crate1", "crate", pCrateModel, crateTexture);
-//    pCrate->setPosition({2.0f, -2.0f, -0.0f});
-//    pCrate->setScale({0.5f, 0.5f, 0.5f});
-//    pScene->addChildNode(pCrate);
+    auto pCrateModel = pResourceCache->loadModel("Resources/Models/ShippingCrate_SimpleCube.obj");
+
+    Logger::logMsg(METHOD, "crate model: \n", *pCrateModel);
+
+    auto crateTexture = pResourceCache->loadTexture("Resources/Textures/ShippingCrateA_tex.png", false);
+    auto pCrate = make_shared<Node>("crate1", "crate", pCrateModel, crateTexture);
+    pCrate->setPosition({1.0f, -2.0f, -5.0f});
+    pCrate->setScale({1.f/6.f, 1.f/6.f, 1.f/6.f});
+    //pCrate->setXRotation(glm::radians(90.f));
+    pScene->addChildNode(pCrate);
 
 //    auto pTree = make_shared<Node>("tree1", "trees", pTreeModel, treeTexture);
 //    pTree->setPosition({-2.0f, -2.0f, -0.0f});
 //    pTree->setScale({0.2f, 0.2f, 0.2f});
 //    pScene->addChildNode(pTree);
 
-    pScene->addChildNode(pClouds);
 
-    Chrono chrono;
-    chrono.start();
+    Chrono moveChrono;
+    Chrono frameRateChrono;
+    moveChrono.start();
+    frameRateChrono.start();
+    int counter = 0;
     bool scaleDown = true;
+    double frameRate = (1.0/60.0) * 1000000.0;
     while (!this->pWindow->shouldWindowClose() && this->gameState != GameState::EXIT) {
 
+        this->pWindow->pollEvents();
         this->processInput();
-        chrono.stop();
 
-        this->pPlayer->move(chrono.duration());
+        moveChrono.stop();
+        auto seconds = moveChrono.duration();
+
+//        pCrate->setYRotation(pCrate->getYrotation() + 0.01f);
+        pCrate->setXRotation(pCrate->getXrotation() + 0.01f);
+
+        this->pPlayer->move(seconds);
 //        auto scale = pCrate->getScale();
 //        if (scaleDown)
 //            pCrate->setScale({scale.x - 0.002f, scale.y - 0.002f, scale.z - 0.002f});
@@ -184,16 +199,32 @@ void MainGame::gameLoop()
 //
 //        auto rotation = pTree->getRotation();
 //        pTree->setRotation({rotation.x /*+ 0.01f*/, rotation.y /*+ 0.01f*/, rotation.z + 0.01f});
-        chrono.start();
+        
+        moveChrono.start();
 
         this->drawGame();
 
-        this->pWindow->pollEvents();
+        frameRateChrono.stop();
+        auto delta = frameRateChrono.duration() * 1000000.0;
+        auto sleepDuration = fmax(0.0, frameRate-delta);
+
+        if ( sleepDuration > 0)
+            usleep(sleepDuration);
+//        if (counter == 10) {
+//            Logger::logMsg(METHOD, "frame rate: ", 1.0/((sleepDuration+delta) / 1000000.0), " duration: ", delta/1000000.0,
+//                " sleep duration: ", sleepDuration);
+//            counter = 0;
+//        }
+
+        frameRateChrono.start();
+
+        counter++;
     }
 }
 
 void MainGame::processInput()
 {
+    static bool fullyRotated = false;
     auto& inputManager = this->pWindow->getInputManager();
     int yRotation = (int)round(glm::degrees(pPlayer->getYrotation()));
     //Logger::logMsg("MainGame::processInput", "Y-rotation = ", yRotation);
@@ -201,30 +232,38 @@ void MainGame::processInput()
         if (yRotation > -90) {
             pPlayer->stopMoving();
             pPlayer->rotateCounterClockwise();
+            fullyRotated = false;
         }
         else if (yRotation <= -90) {
             pPlayer->stopRotating();
             pPlayer->setYRotation(glm::radians(-90.0f));
-            pPlayer->moveForward();
 
-            pCamera->setX(pPlayer->getX());
+            if (fullyRotated) {
+                pPlayer->moveForward();
+            }
+            fullyRotated = true;
         }
     } else if (inputManager.isKeyPressed(GLFW_KEY_D)) {
         if (yRotation < 90) {
             pPlayer->stopMoving();
             pPlayer->rotateClockwise();
+            fullyRotated = false;
         }
         else if (yRotation >= 90) {
             pPlayer->stopRotating();
             pPlayer->setYRotation(glm::radians(90.0f));
-            pPlayer->moveForward();
 
-            pCamera->setX(pPlayer->getX());
+            if (fullyRotated) {
+                pPlayer->moveForward();
+            }
+            fullyRotated = true;
         }
     } else {
         pPlayer->stopMoving();
         pPlayer->stopRotating();
     }
+
+    pCamera->setX(pPlayer->getX());
 }
 
 void MainGame::drawGame()
