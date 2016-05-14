@@ -71,7 +71,7 @@ void MainGame::initSystem()
 
     this->pCamera = make_shared<Camera>();
     this->pCamera->setZ(0.1);
-    this->pLight = make_shared<Light>(vec3(0, 500, 500), vec3(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f));
+    this->pLight = make_shared<Light>(vec3(0, 200, 500), vec3(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f));
 
     auto pScene = make_shared<Scene>("firstScene");
 
@@ -118,7 +118,7 @@ void MainGame::gameLoop()
     pClouds->setYScale(yScale);
 
     auto grassTexture = this->pResourceCache->loadTexture("./Resources/Textures/grass.png");
-    auto pTerrain = make_shared<Terrain>("t1", "terrain", 0, -1, grassTexture);
+    auto pTerrain = make_shared<Terrain>("t1", "terrain", 0, -1, grassTexture);  
     pTerrain->setY(-1.0f);
     auto pTerrain2 = make_shared<Terrain>("t2", "terrain", -1, -1, grassTexture);
     pTerrain2->setY(-1.0f);
@@ -133,7 +133,7 @@ void MainGame::gameLoop()
     pScene->addChildNode(pTerrain3);
     pScene->addChildNode(pTerrain4);
 
-//    srand(time(0));
+    srand(time(0));
     auto pTreeModel = pResourceCache->loadModel("Resources/Models/lowPolyTree.obj");
     auto treeTexture = pResourceCache->loadTexture("Resources/Textures/lowPolyTree.png");
     ostringstream oss;
@@ -145,6 +145,9 @@ void MainGame::gameLoop()
         pTree->setZ( -( (rand() % 40) + 2 ) );
         pTree->setY(-1);
         pTree->setScale({0.2f,0.2f,0.2f});
+		pTree->setReflectivity(0.0001f);
+		pTree->setShineDamper(0.001f);
+
         pScene->addChildNode(pTree);
     }
 
