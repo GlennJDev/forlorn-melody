@@ -220,7 +220,7 @@ void ShaderProgram::enableAlphaBlending() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void ShaderProgram::disableAplphaBlending() {
+void ShaderProgram::disableAlphaBlending() {
     glDisable(GL_BLEND);
 }
 
@@ -229,7 +229,7 @@ void ShaderProgram::enableDepthTesting()
     glEnable(GL_DEPTH_TEST);
 }
 
-void ShaderProgram::disableDebptTesting()
+void ShaderProgram::disableDepthTesting()
 {
     glDisable(GL_DEPTH_TEST);
 }

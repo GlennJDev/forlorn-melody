@@ -2,7 +2,6 @@
 // Created by Glenn Jacob on 01/04/16.
 //
 
-#include <GLFW/glfw3.h>
 #include "Chrono.h"
 
 namespace ForlornMelody {
@@ -19,57 +18,20 @@ Chrono::~Chrono()
 
 void Chrono::start()
 {
-    this->beginTime = glfwGetTime();
+    this->beginTime = high_resolution_clock::now();
 }
 
 void Chrono::stop()
 {
-    this->endTime = glfwGetTime();
+    this->endTime = high_resolution_clock::now();
 }
 
 double Chrono::duration()
 {
-    return endTime - beginTime;
+    auto diff = endTime - beginTime;
+    auto timeSpan = duration_cast<seconds>(diff);
+    return timeSpan.count();
 }
 }
 }
 }
-
-
-
-////
-//// Created by Glenn Jacob on 01/04/16.
-////
-//
-//#include "Chrono.h"
-//
-//namespace ForlornMelody {
-//namespace GameEngine {
-//namespace Base {
-//
-//Chrono::Chrono()
-//{
-//}
-//
-//Chrono::~Chrono()
-//{
-//}
-//
-//void Chrono::start()
-//{
-//    this->beginTime = high_resolution_clock::now();
-//}
-//
-//void Chrono::stop()
-//{
-//    this->endTime = high_resolution_clock::now();
-//}
-//
-//double Chrono::duration()
-//{
-//    auto timeSpan = duration_cast<duration<double>>(endTime - beginTime);
-//    return timeSpan.count();
-//}
-//}
-//}
-//}

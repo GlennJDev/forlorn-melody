@@ -75,9 +75,9 @@ void Camera::move(Camera::Direction direction, float speed)
 mat4 Camera::createViewMatrix() const
 {
     auto viewMatrix = mat4(1.0f); // identity matrix
-    viewMatrix = glm::rotate(viewMatrix, glm::radians(this->getPitch()), vec3(1.0f, 0.0f, 0.0f));
-    viewMatrix = glm::rotate(viewMatrix, glm::radians(this->getYaw()), vec3(0.0f, 1.0f, 0.0f));
-    viewMatrix = glm::rotate(viewMatrix, glm::radians(this->getRoll()), vec3(0.0f, 0.0f, 1.0f));
+    viewMatrix = glm::rotate(viewMatrix, glm::radians(this->pitch), vec3(1.0f, 0.0f, 0.0f));
+    viewMatrix = glm::rotate(viewMatrix, glm::radians(this->yaw), vec3(0.0f, 1.0f, 0.0f));
+    viewMatrix = glm::rotate(viewMatrix, glm::radians(this->roll), vec3(0.0f, 0.0f, 1.0f));
 
     auto cameraPos = this->getPosition();
     viewMatrix = glm::translate(viewMatrix, -cameraPos);
@@ -103,6 +103,21 @@ void Camera::setY(const float y)
 void Camera::setZ(const float z)
 {
     position.z = z;
+}
+
+void Camera::setPitch(const float pitch)
+{
+    this->pitch = pitch;
+}
+
+void Camera::setYaw(const float yaw)
+{
+    this->yaw = yaw;
+}
+
+void Camera::setRoll(const float roll)
+{
+    this->roll = roll;
 }
 }
 }

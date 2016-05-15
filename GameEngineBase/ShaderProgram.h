@@ -52,9 +52,9 @@ public:
 
     // OpenGL settings
     void enableAlphaBlending();
-    void disableAplphaBlending();
+    void disableAlphaBlending();
     void enableDepthTesting();
-    void disableDebptTesting();
+    void disableDepthTesting();
     // Render only what can be seen
     void enableCullFace();
     void disableCullFace();

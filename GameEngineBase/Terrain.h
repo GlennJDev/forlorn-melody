@@ -32,8 +32,10 @@ private:
     float gridX;
     float gridZ;
 
-    static const float SIZE;
-    static const int VERTEX_COUNT;
+    static const float SIZE_X;
+    static const float SIZE_Z;
+    static const int VERTEX_COUNT_Z;
+    static const int VERTEX_COUNT_X;
 };
 } // Custom
 } // GameEngine

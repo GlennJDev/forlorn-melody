@@ -35,13 +35,16 @@ public:
     void setX(const float x);
     void setY(const float y);
     void setZ(const float z);
+    void setPitch(const float pitch);
+    void setYaw(const float yaw);
+    void setRoll(const float roll);
     mat4 createViewMatrix() const;
 
 protected:
     vec3 position{0.0f};
-    float pitch = 0.0f;
-    float yaw = 0.0f;
-    float roll = 0.0f;
+    float pitch = 0.0f; // x-axis
+    float yaw = 0.0f; // y-axis
+    float roll = 0.0f; // z-axis
 };
 } // Custom
 } // GameEngine

@@ -9,7 +9,7 @@
 namespace ForlornMelody {
 namespace GameEngine {
 namespace Custom {
-static const unsigned int BACKGROUND_BATCH_RENDERER_ID = 2;
+static const unsigned int BACKGROUND_BATCH_RENDERER_ID = 3;
 } // Custom
 } // GameEngine
 } // ForlornMelody

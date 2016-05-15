@@ -20,8 +20,8 @@ using glm::vec3;
 namespace ForlornMelody {
 namespace GameEngine {
 namespace Base {
-
-const vec3 MasterRenderer::skyColor = {0.0f,0.7f,0.8f};
+// sky blue : 135-206-250
+const vec3 MasterRenderer::skyColor = {135.f/255.f, 206.f/255.f, 250.f/255.f};
 //const vec3 MasterRenderer::skyColor = {1.f,1.f,1.f};
 
 MasterRenderer::MasterRenderer(const vec2& renderArea)

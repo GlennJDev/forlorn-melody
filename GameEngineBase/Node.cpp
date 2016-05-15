@@ -65,7 +65,7 @@ vec3 Node::getPosition()
 vec3 Node::getCenter() const
 {
     auto& boundingCube =  pObjectModel->getBoundingCube();
-    return boundingCube.center() + this->position;
+    return boundingCube.center() * scale + this->position;
 }
 
 const vec3 Node::getSize() const

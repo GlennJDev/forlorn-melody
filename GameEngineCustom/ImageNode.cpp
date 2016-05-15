@@ -30,13 +30,13 @@ const vector<Base::Vertex>& ImageNode::getVertexData()
     if (vertexData.size() == 0) {
         this->vertexData.resize(4);
 
-        float halfWidth = this->size[0];
-        float halfHeight = this->size[1];
+        float width = this->size[0];
+        float height = this->size[1];
         vec3 corners[4] = {
-            {-halfWidth, -halfHeight, 0.0f}, // bottom-left
-            {halfWidth, -halfHeight, 0.0f}, // bottom-right
-            {halfWidth, halfHeight, 0.0f}, // upper-right
-            {-halfWidth, halfHeight, 0.0f}, // upper-left
+            {0.0f, 0.0f, 0.0f}, // bottom-left
+            {width, 0.0f, 0.0f}, // bottom-right
+            {width, height, 0.0f}, // upper-right
+            {0.0, height, 0.0f}, // upper-left
         };
 
         vertexData[0].position = corners[UPPER_LEFT];
@@ -85,12 +85,12 @@ void ImageNode::renderNodes(Base::IRenderBatch& nodeBatch)
 
 vec3 ImageNode::getCenter() const
 {
-    return vec3(0,0,getZ());
+    return vec3(size[0]/2.0f, size[1]/2.0f,getZ());
 }
 
 vec3 ImageNode::getCenterOffsetFromModelOrigin() const
 {
-    return vec3(0,0,0);
+    return vec3(size[0]/2.0f, size[1]/2.0f, 0);
 }
 } // Custom
 } // GameEngine

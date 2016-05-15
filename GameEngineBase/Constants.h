@@ -16,6 +16,8 @@ namespace Base {
 using std::string;
 
 static const unsigned int NODEBATCH_RENDERER_ID = 1;
+static const unsigned int TERRAINBATCH_RENDERER_ID = 2;
+
 static const string TEXTURE_SAMPLER = "textureSampler";
 static const string TRANSFORMATION_MATRIX = "transformationMatrix";
 static const string PROJECTION_MATRIX = "projectionMatrix";
