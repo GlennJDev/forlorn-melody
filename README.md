@@ -12,6 +12,8 @@ The Game library contains all logic of the game.
 
 # Building
 This project uses Cmake for building a make project or Visual Studio project. Before building make sure that GLFW3 and GLM can be found on your system. 
+
 On Mac OS X the header files must be in the /usr/local/include folder. For linking the game the libraries must be found in /usr/local/lib. 
+
 For building the project on Windows the libraries and the include files must in the C:\Program Files (x86)\glew, C:\Program Files (x86)\glfw or C:\Program Files (x86)\glm. Then change the working directory for the ForlormMelody project to $(SolutionDir)$(Configuration)\ so that it can find the required resources.
 
