@@ -120,6 +120,7 @@ mat4 MasterRenderer::createProjectionMatrix()
     float aspectRatio = this->renderArea[0] / this->renderArea[1];
 
     mat4 projectionMatrix = glm::perspective(glm::radians(FOV), aspectRatio, NEAR_PLANE, FAR_PLANE);
+    //auto projectionMatrix = glm::ortho(-32.f, 32.f, -3.f, 33.f, .1f, 10.f);
 
     return projectionMatrix;
 }

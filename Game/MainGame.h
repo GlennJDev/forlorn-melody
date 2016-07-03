@@ -20,6 +20,7 @@ class Window;
 class ResourceCache;
 class MasterRenderer;
 class Scene;
+class Node;
 class Camera;
 class Light;
 class Chrono;
@@ -64,6 +65,8 @@ private:
     shared_ptr<GameEngine::Base::Chrono> pMoveChrono;
     list<double> moveDeltas;
     shared_ptr<GameEngine::Custom::Player> pPlayer = nullptr;
+
+    shared_ptr<GameEngine::Base::Node> pMusicBox = nullptr;
 
     GameState gameState = PLAY;
 };

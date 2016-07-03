@@ -27,7 +27,7 @@ void main() {
     // Color blending
     // Wanneer een uv coordinaat over 1 gaat start openGL gewoon weer van nul
     // Hierdoor kan textures gemakkelijk laten herhalen.
-    vec2 repeatingUV = vec2(fragmentUV.x * 64, fragmentUV.y * 8);
+    vec2 repeatingUV = vec2(fragmentUV.x * 64, fragmentUV.y * 4);
     vec4 textureColor = texture(textureSampler, repeatingUV);
 
     vec3 unitCameraVector = normalize(toCameraVector);

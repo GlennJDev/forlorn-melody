@@ -271,7 +271,7 @@ void Node::addChildNode(NodePtr pNode)
     this->childNodes.insert(pair);
 }
 
-void Node::removeNode(const Node &node)
+void Node::removeNode(const Node& node)
 {
     this->removeNodeWithName(node.getName());
 }

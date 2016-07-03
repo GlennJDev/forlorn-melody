@@ -80,10 +80,10 @@ void MainGame::initSystem()
 
     this->pCamera = make_shared<Camera>();
     this->pCamera->setZ(0.5f);
-    this->pCamera->setY(1.f);
+    this->pCamera->setY(2.f);
     this->pCamera->setPitch(15.f);
     this->pCamera->setYaw(345.f);
-    this->pLight = make_shared<Light>(vec3(0, 500, 500), vec3(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f));
+    this->pLight = make_shared<Light>(vec3(500, 500, 500), vec3(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f));
 
     auto pScene = make_shared<Scene>("firstScene");
 
@@ -120,7 +120,7 @@ void MainGame::initSystem()
     auto personTexture = this->pResourceCache->loadTexture("./Resources/Textures/playerTexture.png");
     auto objModel = this->pResourceCache->loadModel("Resources/Models/person.obj");
     this->pPlayer = make_shared<Player>("player1", "players", objModel, personTexture);
-    pPlayer->setPosition({0.f, 0.0, -5.0f});
+    pPlayer->setPosition({0.f, 0.0, -3.0f});
     pPlayer->setScale({0.08f,0.08f,0.08f});
     pScene->addChildNode(pPlayer);
 
@@ -145,35 +145,31 @@ void MainGame::gameLoop()
 
     // Terrain
     auto terrainTexture = pResourceCache->loadTexture("Resources/Textures/grass.png");
-    auto pTerrain = make_shared<Terrain>("grass1", "grass", 0, -2, terrainTexture);
-    pScene->addChildNode(pTerrain);
-    auto pTerrain2 = make_shared<Terrain>("grass2", "grass", -1, -2, terrainTexture);
-    pScene->addChildNode(pTerrain2);
-    auto pTerrain3 = make_shared<Terrain>("grass3", "grass", 0, -1, terrainTexture);
+    auto pTerrain3 = make_shared<Terrain>("grass3", "grass", 0, 0, terrainTexture);
     pScene->addChildNode(pTerrain3);
-    auto pTerrain4 = make_shared<Terrain>("grass4", "grass", -1, -1, terrainTexture);
-    pScene->addChildNode(pTerrain4);
+//    auto pTerrain4 = make_shared<Terrain>("grass4", "grass", 1, -1, terrainTexture);
+//    pScene->addChildNode(pTerrain4);
 
     // Scenery
-    auto sceneryTexture = pResourceCache->loadTexture("Resources/Textures/layer-1.png");
-    auto pScenery = make_shared<ImageNode>("backgroundCloud1", "backgroundClouds", sceneryTexture);
-    pScenery->setZOrder(0);
-    pScenery->setPosition({0.0f,-0.0f,-8.f});
-    float yScale = glm::tan(glm::radians(70.f/2.f)) * fabs(pScenery->getZ()) + 0.1f;
-    float xScale = yScale * sceneryTexture.width / sceneryTexture.height;
-    pScenery->setXScale(xScale);
-    pScenery->setYScale(yScale);
-    pScene->addChildNode(pScenery);
+//    auto sceneryTexture = pResourceCache->loadTexture("Resources/Textures/layer-1.png");
+//    auto pScenery = make_shared<ImageNode>("backgroundCloud1", "backgroundClouds", sceneryTexture);
+//    pScenery->setZOrder(0);
+//    pScenery->setPosition({0.0f,-0.0f,-6.f});
+//    float yScale = glm::tan(glm::radians(45.f)) * fabs(pScenery->getZ()) + 0.1f;
+//    float xScale = yScale * sceneryTexture.width / sceneryTexture.height;
+//    pScenery->setXScale(xScale);
+//    pScenery->setYScale(yScale);
+//    pScene->addChildNode(pScenery);
 
-    auto pScenery2 = make_shared<ImageNode>("backgroundCloud2", "backgroundClouds", sceneryTexture);
-    pScenery2->setZOrder(0);
-    pScenery2->setPosition({0.0f, -0.0f, -8.f});
-    yScale = glm::tan(glm::radians(70.f/2.f)) * fabs(pScenery2->getZ()) + 0.1f;
-    xScale = yScale * sceneryTexture.width / sceneryTexture.height;
-    pScenery2->setXScale(xScale);
-    pScenery2->setYScale(yScale);
-    pScenery2->setX(-pScenery2->getSize()[0]);
-    pScene->addChildNode(pScenery2);
+//    auto pScenery2 = make_shared<ImageNode>("backgroundCloud2", "backgroundClouds", sceneryTexture);
+//    pScenery2->setZOrder(0);
+//    pScenery2->setPosition({0.0f, -0.0f, -6.f});
+//    yScale = glm::tan(glm::radians(45.f)) * fabs(pScenery2->getZ()) + 0.1f;
+//    xScale = yScale * sceneryTexture.width / sceneryTexture.height;
+//    pScenery2->setXScale(xScale);
+//    pScenery2->setYScale(yScale);
+//    pScenery2->setX(-pScenery2->getSize()[0]);
+//    pScene->addChildNode(pScenery2);
 
 //    auto groundTexture = pResourceCache->loadTexture("Resources/Textures/layer-2.png");
 //    auto pGround = make_shared<ImageNode>("ground", "ground1", groundTexture);
@@ -184,23 +180,23 @@ void MainGame::gameLoop()
 //    pGround->setScale({xScale, yScale, 1.0f});
 //    pScene->addChildNode(pGround);
 
-    srand(time(0));
-    auto pTreeModel = pResourceCache->loadModel("Resources/Models/lowPolyTree.obj");
-    auto treeTexture = pResourceCache->loadTexture("Resources/Textures/lowPolyTree.png");
-    ostringstream oss;
-    for (int i=0 ; i<10 ; i++) {
-        oss << "tree" << i;
-        string treeName = oss.str();
-        auto pTree = make_shared<Node>(treeName, "trees", pTreeModel, treeTexture);
-        pTree->setX((rand() % 40) - 20);
-        pTree->setZ( -5.5f );
-        pTree->setY(-0.2f);
-        pTree->setScale({0.08f,0.08f,0.08f});
-		pTree->setReflectivity(0.0001f);
-		pTree->setShineDamper(0.001f);
-
-        pScene->addChildNode(pTree);
-    }
+//    srand(time(0));
+//    auto pTreeModel = pResourceCache->loadModel("Resources/Models/lowPolyTree.obj");
+//    auto treeTexture = pResourceCache->loadTexture("Resources/Textures/lowPolyTree.png");
+//    ostringstream oss;
+//    for (int i=0 ; i<10 ; i++) {
+//        oss << "tree" << i;
+//        string treeName = oss.str();
+//        auto pTree = make_shared<Node>(treeName, "trees", pTreeModel, treeTexture);
+//        pTree->setX((rand() % 40) - 20);
+//        pTree->setZ( -3.5f );
+//        pTree->setY(-0.2f);
+//        pTree->setScale({0.08f,0.08f,0.08f});
+//		pTree->setReflectivity(0.0001f);
+//		pTree->setShineDamper(0.001f);
+//
+//        pScene->addChildNode(pTree);
+//    }
 
     this->pFrameRateLimiter->startFrame();
     pMoveChrono->start();
@@ -286,6 +282,25 @@ void MainGame::processInput()
         pPlayer->stopMoving();
         pPlayer->stopRotating();
     }
+
+//    if (inputManager.isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
+//        if (this->pMusicBox == nullptr) {
+//            auto boxTexture = this->pResourceCache->loadTexture("Resources/Textures/ShippingCrateA_tex.png");
+//            auto pBoxModel = this->pResourceCache->loadModel("Resources/Models/ShippingCrate_SimpleCube.obj");
+//            pMusicBox = make_shared<Node>("musicbox1", "musicbox", pBoxModel, boxTexture);
+//            pMusicBox->setScale({0.005f, 0.005f, 0.005f});
+//            pMusicBox->setPosition(pPlayer->getPosition());
+//            this->pMasterRenderer->getScene()->addChildNode(pMusicBox);
+//        } else {
+//            auto scale = pMusicBox->getScale();
+//            pMusicBox->setScale({scale.x + 0.0005f,
+//                                 scale.y + 0.0005f,
+//                                 scale.z + 0.0005f});
+//        }
+//    } else if (this->pMusicBox != nullptr){
+//        this->pMasterRenderer->getScene()->removeNode(*pMusicBox);
+//        this->pMusicBox = nullptr;
+//    }
 }
 
 void MainGame::drawGame()

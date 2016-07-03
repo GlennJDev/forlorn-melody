@@ -11,7 +11,7 @@ namespace GameEngine {
 namespace Base {
 
 const float Terrain::SIZE_X = 64;
-const float Terrain::SIZE_Z = 4;
+const float Terrain::SIZE_Z = 2;
 const int Terrain::VERTEX_COUNT_Z = 4;
 const int Terrain::VERTEX_COUNT_X = 64;
 
@@ -44,16 +44,18 @@ void Terrain::generateTerrain()
     textureCoords.resize((size_t)count);
     vertexCompositions.resize((size_t)count);
     int vertexPointer = 0;
-    for(int zi=0 ; zi<VERTEX_COUNT_Z ; zi++){
-        for(int xi=0 ; xi<VERTEX_COUNT_X ; xi++){
-            vertices[vertexPointer].x = (float)xi/((float)VERTEX_COUNT_X - 1) * SIZE_X;
+    for(float zi=0 ; zi<VERTEX_COUNT_Z ; zi++){
+        for(float xi=0 ; xi<VERTEX_COUNT_X ; xi++){
+            auto maxXi = (float)VERTEX_COUNT_X - 1;
+            vertices[vertexPointer].x = xi/ maxXi * SIZE_X;
             vertices[vertexPointer].y = 0;
-            vertices[vertexPointer].z = (float)zi/((float)VERTEX_COUNT_Z - 1) * SIZE_Z;
+            auto maxZi = (float)VERTEX_COUNT_Z - 1;
+            vertices[vertexPointer].z = (zi/maxZi * SIZE_Z) - SIZE_Z;
             normals[vertexPointer].x = 0;
             normals[vertexPointer].y = 1;
             normals[vertexPointer].z = 0;
-            textureCoords[vertexPointer][0] = (float)xi/((float)VERTEX_COUNT_X - 1);
-            textureCoords[vertexPointer][1] = (float)zi/((float)VERTEX_COUNT_Z - 1);
+            textureCoords[vertexPointer][0] = xi/ maxXi;
+            textureCoords[vertexPointer][1] = zi/ maxZi;
 
             vertexCompositions[vertexPointer][0] = vertexPointer;
             vertexCompositions[vertexPointer][1] = vertexPointer;

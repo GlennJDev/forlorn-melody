@@ -21,7 +21,9 @@ public:
     InputManager();
     virtual ~InputManager();
 
+
     bool isKeyPressed(int glfwKeyCode) const;
+    bool isMouseButtonPressed(int glfwMouseButtonCode) const;
     bool isShiftPressed() const;
     bool isControlPressed() const;
     bool isAltPressed() const;
@@ -35,6 +37,7 @@ public:
 private:
     static void setModifierKeys(int mods);
     static unordered_map<int, bool> keysPressed;
+    static unordered_map<int, bool> mousebuttonsPressed;
     static glm::dvec2 cursorPosition;
     static bool shiftPressed;
     static bool controlPressed;

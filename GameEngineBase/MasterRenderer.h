@@ -54,8 +54,8 @@ public:
     void addRenderer(const string& rendererId, shared_ptr<IRenderBatch> pRenderBatch);
     void removeRenderer(const string& rendererId);
 
-private:
     mat4 createProjectionMatrix();
+private:
 
     unordered_map<string, shared_ptr<IRenderBatch>> renderers;
     shared_ptr<Scene> pScene = nullptr;

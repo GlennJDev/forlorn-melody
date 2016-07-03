@@ -9,13 +9,10 @@ namespace GameEngine {
 namespace Base {
 
 unordered_map<int, bool> InputManager::keysPressed;
-
+unordered_map<int, bool> InputManager::mousebuttonsPressed;
 glm::dvec2 InputManager::cursorPosition;
-
 bool InputManager::shiftPressed = false;
-
 bool InputManager::controlPressed = false;
-
 bool InputManager::altPressed = false;
 
 InputManager::InputManager()
@@ -44,7 +41,7 @@ void InputManager::cursorPositionCallback(GLFWwindow* window, double xpos, doubl
 
 void InputManager::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-    keysPressed[button] = action == GLFW_PRESS;
+    mousebuttonsPressed[button] = action == GLFW_PRESS;
     setModifierKeys(mods);
 }
 
@@ -57,10 +54,7 @@ void InputManager::setModifierKeys(int mods)
 
 bool InputManager::isKeyPressed(int glfwKeyCode) const
 {
-    if (keysPressed.find(glfwKeyCode) != keysPressed.end()) {
-        return keysPressed[glfwKeyCode];
-    }
-    return false;
+    return keysPressed.count(glfwKeyCode) > 0 && keysPressed[glfwKeyCode];
 }
 
 bool InputManager::isShiftPressed() const
@@ -81,6 +75,11 @@ bool InputManager::isAltPressed() const
 glm::dvec2 InputManager::getCursorPosition() const
 {
     return cursorPosition;
+}
+
+bool InputManager::isMouseButtonPressed(int glfwMouseButtonCode) const
+{
+    return mousebuttonsPressed.count(glfwMouseButtonCode) > 0 && mousebuttonsPressed[glfwMouseButtonCode];
 }
 } // Base
 } // GameEngine
